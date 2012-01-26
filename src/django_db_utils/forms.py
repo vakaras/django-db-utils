@@ -8,6 +8,7 @@ from pysheets.readers import SheetReader, SpreadSheetReader
 from db_utils.validators.name import (
         NamesValidator, SurnameValidator, ALPHABET_LT)
 from db_utils.validators.phone_number import PhoneNumberValidator
+from db_utils.validators.identity_code import IdentityCodeValidator
 
 
 class FirstNameField(forms.CharField):
@@ -52,6 +53,27 @@ class LastNameField(forms.CharField):
             return value
         else:
             return self._validator(value)
+
+
+class IdentityCodeField(forms.CharField):
+    """ Form field for last name.
+    """
+
+    def __init__(self, *args, **kwargs):
+        super(IdentityCodeField, self).__init__(*args, **kwargs)
+        self._validator = IdentityCodeValidator(
+                validation_exception_type=ValidationError,
+                )
+
+    def clean(self, value):
+        """ Cleans value, to contain Unicode string or None.
+        """
+
+        value = super(IdentityCodeField, self).clean(value)
+        if not value and not self.required:
+            return value
+        else:
+            return unicode(self._validator(value))
 
 
 class PhoneNumberField(forms.CharField):

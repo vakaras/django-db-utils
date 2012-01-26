@@ -7,6 +7,7 @@ from django.utils.translation import ugettext as _
 from db_utils.validators.name import (
         NamesValidator, SurnameValidator, ALPHABET_LT)
 from db_utils.validators.phone_number import PhoneNumberValidator
+from db_utils.validators.identity_code import IdentityCodeValidator
 from django_db_utils import forms
 
 
@@ -62,6 +63,33 @@ class LastNameField(models.CharField):
                 }
         defaults.update(kwargs)
         return super(LastNameField, self).formfield(**defaults)
+
+
+class IdentityCodeField(models.CharField):
+    """ Model field for last name.
+    """
+
+    description = _("Identity code")
+    def __init__(self, **kwargs):
+        kwargs['max_length'] = kwargs.get('max_length', 11)
+        kwargs['verbose_name'] = kwargs.get(
+                'verbose_name', _(u'Identity code'))
+        models.CharField.__init__(self, **kwargs)
+        self._identity_code_validator = IdentityCodeValidator(
+                validation_exception_type=ValidationError,
+                convert=False,
+                )
+        self.validators.append(
+                lambda text : unicode(self._identity_code_validator(text)))
+
+    def formfield(self, **kwargs):
+        """ Creates form field for ModelForm.
+        """
+        defaults = {
+                'form_class': forms.IdentityCodeField,
+                }
+        defaults.update(kwargs)
+        return super(IdentityCodeField, self).formfield(**defaults)
 
 
 class UUIDField(models.CharField):
