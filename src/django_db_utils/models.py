@@ -77,7 +77,6 @@ class IdentityCodeField(models.CharField):
         models.CharField.__init__(self, **kwargs)
         self._identity_code_validator = IdentityCodeValidator(
                 validation_exception_type=ValidationError,
-                convert=False,
                 )
         self.validators.append(
                 lambda text : unicode(self._identity_code_validator(text)))
