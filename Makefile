@@ -1,4 +1,4 @@
-PACKAGES={package_name}
+PACKAGES=django_db_utils
 
 test:
 	bin/test $(PACKAGES) \
