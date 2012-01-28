@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from django.core.exceptions import ValidationError
 from django import forms
 from django.utils.translation import ugettext as _
@@ -11,6 +13,9 @@ from db_utils.validators.phone_number import PhoneNumberValidator
 from db_utils.validators.identity_code import IdentityCodeValidator
 
 
+EXTENDED_ALPHABET = ALPHABET_LT + (u'x', u'w', u'q', u'ä', u'ü', u'ö', u'ß')
+
+
 class FirstNameField(forms.CharField):
     """ Form field for first name.
     """
@@ -18,7 +23,7 @@ class FirstNameField(forms.CharField):
     def __init__(self, *args, **kwargs):
         super(FirstNameField, self).__init__(*args, **kwargs)
         self._validator = NamesValidator(
-                ALPHABET_LT,
+                EXTENDED_ALPHABET,
                 validation_exception_type=ValidationError,
                 )
 
@@ -40,7 +45,7 @@ class LastNameField(forms.CharField):
     def __init__(self, *args, **kwargs):
         super(LastNameField, self).__init__(*args, **kwargs)
         self._validator = SurnameValidator(
-                ALPHABET_LT,
+                EXTENDED_ALPHABET,
                 validation_exception_type=ValidationError,
                 )
 

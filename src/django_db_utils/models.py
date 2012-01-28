@@ -6,14 +6,10 @@ from django.core.exceptions import ValidationError
 from django.db import models
 from django.utils.translation import ugettext as _
 
-from db_utils.validators.name import (
-        NamesValidator, SurnameValidator, ALPHABET_LT)
-from db_utils.validators.phone_number import PhoneNumberValidator
-from db_utils.validators.identity_code import IdentityCodeValidator
+from django_db_utils.forms import (
+        NamesValidator, SurnameValidator, EXTENDED_ALPHABET,
+        PhoneNumberValidator, IdentityCodeValidator)
 from django_db_utils import forms
-
-
-EXTENDED_ALPHABET = ALPHABET_LT + (u'x', u'q', u'ä', u'ü', u'ö', u'ß')
 
 
 class FirstNameField(models.CharField):
