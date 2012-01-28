@@ -11,6 +11,9 @@ from db_utils.validators.identity_code import IdentityCodeValidator
 from django_db_utils import forms
 
 
+EXTENDED_ALPHABET = ALPHABET_LT + (u'x', u'q', u'ä', u'ü', u'ö', u'ß')
+
+
 class FirstNameField(models.CharField):
     """ Model field for first name.
     """
@@ -22,7 +25,7 @@ class FirstNameField(models.CharField):
         models.CharField.__init__(self, **kwargs)
         self.validators.append(
                 NamesValidator(
-                    ALPHABET_LT,
+                    EXTENDED_ALPHABET,
                     validation_exception_type=ValidationError,
                     convert=False,
                     ),
@@ -49,7 +52,7 @@ class LastNameField(models.CharField):
         models.CharField.__init__(self, **kwargs)
         self.validators.append(
                 SurnameValidator(
-                    ALPHABET_LT,
+                    EXTENDED_ALPHABET,
                     validation_exception_type=ValidationError,
                     convert=False,
                     ),
