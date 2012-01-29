@@ -102,7 +102,6 @@ def dump_query_to_sheet(
                 model = related_obj.model
                 field = model._meta.get_field(field_name)
                 joinable[related_obj.name.split(':')[1]] = field, kwargs
-                print dir(field)
                 sheet.add_column(field.verbose_name)
                 break
 
@@ -119,7 +118,6 @@ def dump_query_to_sheet(
         for name, (field, (filter_kwargs, exclude_kwargs)) in (
                 joinable.items()):
             query = getattr(obj, '{0}_set'.format(name)).all()
-            print name, field, query
             row[field.verbose_name] = None, join(
                     query.filter(**filter_kwargs).exclude(**exclude_kwargs),
                     field.name)
