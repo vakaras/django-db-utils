@@ -182,6 +182,8 @@ class SpreadSheetField(forms.FileField):
                     sheet = Sheet(
                             value, reader=reader(),
                             **self.sheet_constructor_args)
+                except forms.ValidationError:
+                    raise
                 except Exception as e:
                     raise forms.ValidationError(
                             _(u'Error occured while reading: {0}'
@@ -194,6 +196,8 @@ class SpreadSheetField(forms.FileField):
                 spreadsheet = SpreadSheet(
                         value, reader=reader(),
                         **self.spreadsheet_constructor_args)
+            except forms.ValidationError:
+                raise
             except Exception as e:
                 raise forms.ValidationError(
                         _(u'Error occured while reading: {0}'
