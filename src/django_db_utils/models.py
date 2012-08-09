@@ -75,6 +75,7 @@ class IdentityCodeField(models.CharField):
         kwargs['max_length'] = kwargs.get('max_length', 11)
         kwargs['verbose_name'] = kwargs.get(
                 'verbose_name', _(u'Identity code'))
+        kwargs['null'] = kwargs.get('null', True)
         models.CharField.__init__(self, **kwargs)
         self._identity_code_validator = IdentityCodeValidator(
                 validation_exception_type=ValidationError,

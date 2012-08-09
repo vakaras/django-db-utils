@@ -77,7 +77,7 @@ class IdentityCodeField(forms.CharField):
 
         value = super(IdentityCodeField, self).clean(value)
         if not value and not self.required:
-            return value
+            return None
         else:
             return unicode(self._validator(value))
 
