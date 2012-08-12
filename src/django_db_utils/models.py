@@ -3,6 +3,7 @@
 from uuid import uuid4 as uuid
 
 from django.core.exceptions import ValidationError
+from django.core import validators
 from django.db import models
 from django.utils.translation import ugettext as _
 
@@ -142,3 +143,19 @@ class PhoneNumberField(models.CharField):
                 }
         defaults.update(kwargs)
         return super(PhoneNumberField, self).formfield(**defaults)
+
+
+class PostalNumberField(models.CharField):
+    """ Model field for postal number.
+    """
+
+    description = _("Postal number")
+    def __init__(self, **kwargs):
+        length = kwargs.get('length', 5)
+        kwargs['max_length'] = kwargs.get('max_length', length)
+        kwargs['verbose_name'] = kwargs.get(
+                'verbose_name', _('Postal number'))
+        models.CharField.__init__(self, **kwargs)
+        self.validators.append(validators.MaxLengthValidator(length))
+        self.validators.append(validators.MinLengthValidator(length))
+        self.validators.append(validators.RegexValidator(r'^\d*$'))
