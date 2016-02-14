@@ -4,9 +4,9 @@ from django.core.exceptions import ValidationError
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 
-from pysheets.spreadsheet import SpreadSheet
-from pysheets.sheet import Sheet
-from pysheets.readers import SheetReader, SpreadSheetReader
+#from pysheets.spreadsheet import SpreadSheet
+#from pysheets.sheet import Sheet
+#from pysheets.readers import SheetReader, SpreadSheetReader
 
 from db_utils.validators.name import (
         NamesValidator, SurnameValidator, ALPHABET_LT)
@@ -109,97 +109,97 @@ class PhoneNumberField(forms.CharField):
             return self._validator(value)
 
 
-class SheetField(forms.FileField):
-    """ Form field for sheet.
-    """
+#class SheetField(forms.FileField):
+    #""" Form field for sheet.
+    #"""
 
-    def __init__(
-            self, sheet_name_column=_(u'Sheet'),
-            sheet_constructor_args=None,
-            spreadsheet_constructor_args=None,
-            *args, **kwargs):
-        super(SheetField, self).__init__(*args, **kwargs)
-        self.sheet_name_column = sheet_name_column
-        self.sheet_constructor_args = sheet_constructor_args or {}
-        self.spreadsheet_constructor_args = (
-                spreadsheet_constructor_args or {})
+    #def __init__(
+            #self, sheet_name_column=_(u'Sheet'),
+            #sheet_constructor_args=None,
+            #spreadsheet_constructor_args=None,
+            #*args, **kwargs):
+        #super(SheetField, self).__init__(*args, **kwargs)
+        #self.sheet_name_column = sheet_name_column
+        #self.sheet_constructor_args = sheet_constructor_args or {}
+        #self.spreadsheet_constructor_args = (
+                #spreadsheet_constructor_args or {})
 
-    def clean(self, value, initial):
-        """ Cleans value to contain Sheet.
-        """
+    #def clean(self, value, initial):
+        #""" Cleans value to contain Sheet.
+        #"""
 
-        value = super(SheetField, self).clean(value, initial)
-        try:
-            reader = SpreadSheetReader.plugins.get_by_file(value.name)
-        except KeyError:
-            try:
-                reader = SheetReader.plugins.get_by_file(value.name)
-            except KeyError:
-                raise forms.ValidationError(
-                        _(u'Failed to recognize file type.'))
-            else:
-                sheet = Sheet(
-                        value, reader=reader(),
-                        **self.sheet_constructor_args)
-                return sheet
-        else:
-            spreadsheet = SpreadSheet(
-                    value, reader=reader(),
-                    **self.spreadsheet_constructor_args)
-            return spreadsheet.join(self.sheet_name_column)
+        #value = super(SheetField, self).clean(value, initial)
+        #try:
+            #reader = SpreadSheetReader.plugins.get_by_file(value.name)
+        #except KeyError:
+            #try:
+                #reader = SheetReader.plugins.get_by_file(value.name)
+            #except KeyError:
+                #raise forms.ValidationError(
+                        #_(u'Failed to recognize file type.'))
+            #else:
+                #sheet = Sheet(
+                        #value, reader=reader(),
+                        #**self.sheet_constructor_args)
+                #return sheet
+        #else:
+            #spreadsheet = SpreadSheet(
+                    #value, reader=reader(),
+                    #**self.spreadsheet_constructor_args)
+            #return spreadsheet.join(self.sheet_name_column)
 
 
-class SpreadSheetField(forms.FileField):
-    """ Form field for spreadsheet.
-    """
+#class SpreadSheetField(forms.FileField):
+    #""" Form field for spreadsheet.
+    #"""
 
-    def __init__(
-            self, sheet_name=_(u'Sheet'),
-            sheet_constructor_args=None,
-            spreadsheet_constructor_args=None,
-            *args, **kwargs):
-        super(SpreadSheetField, self).__init__(*args, **kwargs)
-        self.sheet_name = sheet_name
-        self.sheet_constructor_args = sheet_constructor_args or {}
-        self.spreadsheet_constructor_args = (
-                spreadsheet_constructor_args or {})
+    #def __init__(
+            #self, sheet_name=_(u'Sheet'),
+            #sheet_constructor_args=None,
+            #spreadsheet_constructor_args=None,
+            #*args, **kwargs):
+        #super(SpreadSheetField, self).__init__(*args, **kwargs)
+        #self.sheet_name = sheet_name
+        #self.sheet_constructor_args = sheet_constructor_args or {}
+        #self.spreadsheet_constructor_args = (
+                #spreadsheet_constructor_args or {})
 
-    def clean(self, value, initial):
-        """ Cleans value to contain Sheet.
-        """
+    #def clean(self, value, initial):
+        #""" Cleans value to contain Sheet.
+        #"""
 
-        value = super(SpreadSheetField, self).clean(value, initial)
-        try:
-            reader = SpreadSheetReader.plugins.get_by_file(value.name)
-        except KeyError:
-            try:
-                reader = SheetReader.plugins.get_by_file(value.name)
-            except KeyError:
-                raise forms.ValidationError(
-                        _(u'Failed to recognize file type.'))
-            else:
-                try:
-                    sheet = Sheet(
-                            value, reader=reader(),
-                            **self.sheet_constructor_args)
-                except forms.ValidationError:
-                    raise
-                except Exception as e:
-                    raise forms.ValidationError(
-                            _(u'Error occured while reading: {0}'
-                                ).format(e))
-                spreadsheet = SpreadSheet()
-                spreadsheet.load(sheet, name=self.sheet_name)
-                return spreadsheet
-        else:
-            try:
-                spreadsheet = SpreadSheet(
-                        value, reader=reader(),
-                        **self.spreadsheet_constructor_args)
-            except forms.ValidationError:
-                raise
-            except Exception as e:
-                raise forms.ValidationError(
-                        _(u'Error occured while reading: {0}'
-                            ).format(e))
-            return spreadsheet
+        #value = super(SpreadSheetField, self).clean(value, initial)
+        #try:
+            #reader = SpreadSheetReader.plugins.get_by_file(value.name)
+        #except KeyError:
+            #try:
+                #reader = SheetReader.plugins.get_by_file(value.name)
+            #except KeyError:
+                #raise forms.ValidationError(
+                        #_(u'Failed to recognize file type.'))
+            #else:
+                #try:
+                    #sheet = Sheet(
+                            #value, reader=reader(),
+                            #**self.sheet_constructor_args)
+                #except forms.ValidationError:
+                    #raise
+                #except Exception as e:
+                    #raise forms.ValidationError(
+                            #_(u'Error occured while reading: {0}'
+                                #).format(e))
+                #spreadsheet = SpreadSheet()
+                #spreadsheet.load(sheet, name=self.sheet_name)
+                #return spreadsheet
+        #else:
+            #try:
+                #spreadsheet = SpreadSheet(
+                        #value, reader=reader(),
+                        #**self.spreadsheet_constructor_args)
+            #except forms.ValidationError:
+                #raise
+            #except Exception as e:
+                #raise forms.ValidationError(
+                        #_(u'Error occured while reading: {0}'
+                            #).format(e))
+            #return spreadsheet
